@@ -1,8 +1,5 @@
 import pandas as pd
 
-df = pd.read_csv(r'C:\Users\USER\Documents\All_Docs\ClickOnKaduna\Field Activity\Task\HR_Complete..csv')
-df.head()
-
 def ensure_directory_exist(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
