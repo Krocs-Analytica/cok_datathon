@@ -1,11 +1,10 @@
 
 import pandas as pd
-
-from pathlib import Path
-
+import os
+import pathlib
  
 
-def get_data(source: str, path: str) -> pd.DataFrame:
+def get_data( path: str, source: str) -> pd.DataFrame:
 
     """Get data from a file.
 
@@ -24,55 +23,39 @@ def get_data(source: str, path: str) -> pd.DataFrame:
         pd.DataFrame: _description_
 
     """
+    if not pathlib.Path(path).exists():
+        raise ValueError('File does not exist')
 
-    path_to_file = 'readme.csv'
+    try:
 
-    path = Path(path_to_file)
+        if source == 'csv':
 
- 
+            return pd.read_csv(path)
 
-    if path.is_file():
+        elif source == 'excel':
 
-        print(f'The file {path_to_file} exists')
+            return pd.read_excel(path)
 
-    else:
+        elif source == 'json':
 
-        print(f'The file {path_to_file} does not exist')
+            return pd.read_json(path)
 
- 
+        elif source == 'pickle':
 
- 
+            return pd.read_pickle(path)
 
-try:
+        elif source == 'sql':
 
-    if source == 'csv':
+            return pd.read_sql(path)
 
-        return pd.read_csv(path)
+        elif source == 'html':
 
-    elif source == 'excel':
+            return pd.read_html(path)
 
-        return pd.read_excel(path)
+        else:
 
-    elif source == 'json':
+            raise ValueError('Source not supported.')
 
-        return pd.read_json(path)
+    except Exception as e:
 
-    elif source == 'pickle':
-
-        return pd.read_pickle(path)
-
-    elif source == 'sql':
-
-        return pd.read_sql(path)
-
-    elif source == 'html':
-
-        return pd.read_html(path)
-
-    else:
-
-        raise ValueError('Source not supported.')
-
-except Exception as e:
-
-print(e)
+        print(e)

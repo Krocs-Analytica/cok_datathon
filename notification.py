@@ -14,13 +14,21 @@ def send_email(title, message):
     """
     Send an email to stakeholders.
     """
-    print('Email Sent!')
-    pass
+    print(f'''
+        Email message Sent!
+        Title: {title}
+        Message: {message}
+    ''')
+    
 
 
 def send_slack(title, message):
     """
     Send slack message to stakeholders.
     """
-    print(f'Slack message Sent! \n Title: {title} \n Message: {message}')
-    pass
+    print(f'''
+        Slack message Sent!
+        Title: {title}
+        Message: {message}
+    ''')
+    
