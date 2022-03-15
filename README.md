@@ -1,7 +1,5 @@
 # Click-On Kaduna Datathon
 
-## KROCS ANALYTICA
-
 ### Theme: Data Transformation; From ETL to ELT of Building Data Pipelines.
 
 ### Topic: Building Error Workflow Models from ODK to Data Factory.
@@ -37,3 +35,8 @@ The whole ELT process is triggered and completed by etl_processor.py.
   - Numpy
 
 
+***by:***
+
+![krocs_analytica_logo_small](https://user-images.githubusercontent.com/14994703/158464363-dd554e3f-ccdf-49d8-948c-f04f8971f8b4.png)
+
+:+1:
