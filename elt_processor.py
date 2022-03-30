@@ -45,14 +45,14 @@ data = transform_data(data)
 
 transformed_data = save_data(data, filename='water_point1_results_transformed', path='lakehouse', file_type='csv', allow_index=False)
 
-
+transformed_data_location = transformed_data.replace('\\', '/')
 title = 'ELT Job Status: '
 
 message = f'''
 
     The ETL job has finished successfully.<br/>
 
-    The transformed data is available at {transformed_data}
+    The transformed data is available at http://fakeurl.com/{transformed_data_location}<br/>
 
     '''
 medium = 'email'
