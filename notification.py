@@ -1,4 +1,8 @@
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 from config.config_loader import read_config_file
 
 config = read_config_file()
@@ -31,21 +35,42 @@ def send_slack(title, message):
 
 
 def send_email(subject, body):
-    import smtplib
 
     FROM = user
     TO = recipient if isinstance(recipient, list) else [recipient]
     SUBJECT = subject
     TEXT = body
 
-    # Prepare actual message
-    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
-    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = user
+    msg['To'] = ", ".join(TO)
+
+    html = f"""\
+        <html>
+        <head></head>
+        <body>
+            <p>Hi!</p>
+            <p>Don't panic! <em><strong>Krocs Analytica</strong></em> is just testing her code!</p>
+
+            <p>{body}</p>
+
+            <em><strong>powered by:</strong></em>
+            <br/>
+            <img src="https://user-images.githubusercontent.com/14994703/158464363-dd554e3f-ccdf-49d8-948c-f04f8971f8b4.png"/>
+            </p>
+        </body>
+        </html>
+        """
+    part1 = MIMEText(body, 'plain')
+    part2 = MIMEText(html, 'html')
+    msg.attach(part1)
+    msg.attach(part2) 
     try:
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.ehlo()
         server.login(user, pwd)
-        server.sendmail(FROM, TO, message)
+        server.sendmail(FROM, TO, msg.as_string())
         server.close()
         print('successfully sent the mail')
     except Exception as e:

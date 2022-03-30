@@ -91,6 +91,6 @@ def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
         print(e)
 
     title = 'Data Cleaning'
-    medium = 'email'
+    medium = 'slack'
     send_notification(title, message, medium)
     return data

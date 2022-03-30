@@ -50,9 +50,10 @@ title = 'ELT Job Status: '
 
 message = f'''
 
-        The ETL job has finished successfully.
+    The ETL job has finished successfully.<br/>
 
-        The transformed data is available at {transformed_data}
+    The transformed data is available at {transformed_data}
+
     '''
 medium = 'email'
 
