@@ -58,4 +58,3 @@ message = f'''
 medium = 'email'
 
 send_notification(title, message, medium)
-
