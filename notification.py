@@ -19,18 +19,6 @@ def send_notification(title, message, medium):
         raise ValueError('Medium not supported.')
 
 
-# def send_email(title, message):
-#     """
-#     Send an email to stakeholders.
-#     """
-#     print(f'''
-#         Email message Sent!
-#         Title: {title}
-#         Message: {message}
-#     ''')
-    
-
-
 def send_slack(title, message):
     """
     Send slack message to stakeholders.

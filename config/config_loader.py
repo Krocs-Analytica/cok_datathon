@@ -9,7 +9,3 @@ def read_config_file(filename=filename):
         except yaml.YAMLError as exc:
             print(exc)
             return None
-
-# data = read_config_file(fn)
-# if data.get('clean').get('check_missing_values'):
-#     print('Missing values checked successfully!\n')

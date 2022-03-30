@@ -94,4 +94,3 @@ def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
     medium = 'email'
     send_notification(title, message, medium)
     return data
-
