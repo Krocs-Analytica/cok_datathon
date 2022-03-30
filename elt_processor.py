@@ -19,7 +19,7 @@ pd.set_option(
 
     )
 
-source_file = 'input\water_point1_results.csv'
+source_file = 'cok_datathon\input\water_point1_results.csv'
 
 
 data = get_data(path=source_file, source='csv')

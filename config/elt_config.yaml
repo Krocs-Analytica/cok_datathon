@@ -1,0 +1,17 @@
+---
+clean:
+    check_missing_values: false
+    check_duplicate_values: false
+    check_invalid_values: false
+    check_data_types: true
+    fill_missing_values: false
+    check_out_of_range_values: true
+    range_min_value: 1
+    range_max_value: 4
+email:
+    user: "mr.kleffy@gmail.com"
+    password: jjzlpafgphtmhfrs
+    recipient: ["mr.kleffy@gmail.com", "adebiyi_sina@yahoo.com", "confidencevandu@gmail.com", "faizasani934@gmail.com", "mangutsunday@gmail.com", "biyabobai@gmail.com", "dogodeborah@yahoo.com"] 
+
+
+# skills@click-onkaduna.ng

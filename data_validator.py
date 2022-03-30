@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from notification import send_notification
+from config.config_loader import read_config_file
 
 
 def check_missing_values(df: pd.DataFrame)-> pd.DataFrame:
@@ -29,10 +30,11 @@ def check_invalid_values(df: pd.DataFrame)-> pd.DataFrame:
     return data
 
 
-def check_out_of_range_values(df: pd.DataFrame)-> pd.DataFrame:
+def check_out_of_range_values(df: pd.DataFrame, min_value: int, max_value: int)-> pd.DataFrame:
     data = df.copy()
     # check for out of range values
-    data = data[data['water_point:geo:Accuracy'] < 5]
+    filter = ((data['water_point:geo:Accuracy'] >= min_value) & (data['water_point:geo:Accuracy'] <= max_value))
+    data = data[filter]
     print('Out of range values checked successfully!\n')
     return data
 
@@ -54,21 +56,34 @@ def fill_missing_values(df: pd.DataFrame)-> pd.DataFrame:
 
 # do data cleaning
 def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
-    # TODO: read data cleaning configurations from a file e.g yaml file
     data = df.copy()
     try:
-        # check for missing values
-        data = check_missing_values(data)
-        # check for duplicate values
-        data = check_duplicate_values(data)
-        # check for invalid values
-        data = check_invalid_values(data)
-        # check for out of range values
-        data = check_out_of_range_values(data)
-        # validate data types
-        data = check_data_types(data)
-        # fill or drop missing values
-        data = fill_missing_values(data)
+        config = read_config_file()
+        if config.get('clean').get('check_missing_values'):
+            # check for missing values
+            data = check_missing_values(data)
+
+        if config.get('clean').get('check_duplicate_values'):
+            # check for duplicate values
+            data = check_duplicate_values(data)
+        
+        if config.get('clean').get('check_invalid_values'):
+            # check for invalid values
+            data = check_invalid_values(data)
+        
+        if config.get('clean').get('check_out_of_range_values'):
+            # check for out of range values
+            min_value = config.get('clean').get('range_min_value')
+            max_value = config.get('clean').get('range_max_value')
+            data = check_out_of_range_values(data, min_value=min_value, max_value=max_value)
+        
+        if config.get('clean').get('check_data_types'):
+            # validate data types
+            data = check_data_types(data)
+        
+        if config.get('clean').get('fill_missing_values'):
+            # fill or drop missing values
+            data = fill_missing_values(data)
 
         message = 'Data cleaning finished successfully!'
     except Exception as e:
@@ -76,7 +91,7 @@ def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
         print(e)
 
     title = 'Data Cleaning'
-    medium = 'slack'
+    medium = 'email'
     send_notification(title, message, medium)
     return data
 
