@@ -13,7 +13,7 @@ def change_format(df: pd.DataFrame)-> pd.DataFrame:
     if len(cols_to_change) > 0:
         for col in cols_to_change:
             df[col] = pd.to_datetime(df[col])
-    print('Data format changed successfully!\n')
+        print('Data format changed successfully!\n')
     return df
 
 
@@ -23,7 +23,7 @@ def apply_function_to_column(df: pd.DataFrame)-> pd.DataFrame:
         cols = config.get('transform').get('columns_to_map')
         for col in cols:
             df[col] = df[col].map({'Yes': 1, 'No': 0, 'yes': 1, 'no': 0})
-    print('Applying function to each column finished successfully!\n')
+        print('Applying function to each column finished successfully!\n')
     return df
 
 
@@ -58,11 +58,10 @@ def filter_data(df: pd.DataFrame)-> pd.DataFrame:
 
 
 def transform_data(df: pd.DataFrame)-> pd.DataFrame:
-    # TODO: read data transformation configurations from a file e.g yaml file
     data = df.copy()
     try:
         # convert data to a new format
-        if config.get('transform').get('change_format'):
+        if config.get('transform').get('change_column_to_datetime'):
             data = change_format(data)
         # apply a function to each column
         if config.get('transform').get('apply_function_to_column'):
@@ -85,10 +84,7 @@ def transform_data(df: pd.DataFrame)-> pd.DataFrame:
 
         message = "Data transformations finished successfully!"
     except Exception as e:
-        message = "Data transformations failed!"
-        print(e)
+        message = f"Data transformations failed!\n{e}"
 
-    title = 'Data Transformation'
-    medium = "email"
-    send_notification(title, message, medium)
+    print(message)
     return data

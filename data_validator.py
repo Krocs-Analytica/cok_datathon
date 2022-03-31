@@ -28,13 +28,24 @@ def check_invalid_values(df: pd.DataFrame)-> pd.DataFrame:
     print('Invalid values checked successfully!\n')
     return data
 
+def drop_columns(df: pd.DataFrame)-> pd.DataFrame:
+    data = df.copy()
+    cols = config.get('clean').get('drop_columns')
+    if len(cols) > 0:
+        for col in cols:
+            data = data.drop(col, axis=1)
+    return data
 
-def check_out_of_range_values(df: pd.DataFrame, min_value: int, max_value: int)-> pd.DataFrame:
-    # data = df.copy()
+
+def drop_out_of_range_values(df: pd.DataFrame, min_value: int, max_value: int)-> pd.DataFrame:
+    data = df.copy()
+    cols_to_check_range = config.get('clean').get('drop_out_of_range_values')
+    if len(cols_to_check_range) > 0:
     # check for out of range values
-    # filter = ((data['water_point:geo:Accuracy'] >= min_value) & (data['water_point:geo:Accuracy'] <= max_value))
-    # data = data[filter]
-    print('Out of range values checked successfully!\n')
+        for col in cols_to_check_range:
+            filter = ((data[col] >= min_value) & (data[col] <= max_value))
+            data = data[filter]
+        print('Out of range values dropped successfully!\n')
     return data
 
 
@@ -49,7 +60,7 @@ def fill_missing_values(df: pd.DataFrame)-> pd.DataFrame:
     cols = config.get('clean').get('missing_value_columns')
     value = config.get('clean').get('fill_missing_value_with')
     for col in cols:
-        data = data.fillna(value)
+        data[col] = data[col].fillna(str(value))
     print('Missing values filled successfully!\n')
     return data
 
@@ -71,11 +82,15 @@ def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
             # check for invalid values
             data = check_invalid_values(data)
         
-        if config.get('clean').get('check_out_of_range_values'):
+        if config.get('clean').get('drop_columns'):
+            # drop unwanted columns
+            data = drop_columns(data)
+        
+        if config.get('clean').get('drop_out_of_range_values'):
             # check for out of range values
             min_value = config.get('clean').get('range_min_value')
             max_value = config.get('clean').get('range_max_value')
-            data = check_out_of_range_values(data, min_value=min_value, max_value=max_value)
+            data = drop_out_of_range_values(data, min_value=min_value, max_value=max_value)
         
         if config.get('clean').get('check_data_types'):
             # validate data types
@@ -89,10 +104,7 @@ def clean_data(df: pd.DataFrame = None)-> pd.DataFrame:
         {missing_info}
         Data cleaning finished successfully!'''
     except Exception as e:
-        message = 'Data cleaning failed!'
-        print(e)
+        message = f'Data cleaning failed!:\n{e}'
 
-    title = 'Data Cleaning'
-    medium = 'email'
-    send_notification(title, message, medium)
+    print(message)
     return data

@@ -5,18 +5,18 @@ clean:
     check_invalid_values: false
     check_data_types: false
     fill_missing_values: true
+    drop_columns: ["water_point:reasons_not_used"]
     missing_value_columns: ["water_point:water_source_used"]
     fill_missing_value_with: "no"
-    check_out_of_range_values: false
-    range_min_value: 1
-    range_max_value: 4
+    drop_out_of_range_values: ["water_point:geo:Accuracy"]
+    range_min_value: 0
+    range_max_value: 5
     check_max_value: []
     check_min_value: []
 transform:
     map_yes_no_to_1_0: true
     columns_to_map: ["water_point:source_functional", "water_point:close_water_source"]
-    change_column_to_datetime: []
-    change_format: false
+    change_column_to_datetime: ["start", "end", "today"]
     apply_function_to_column: true
     apply_function_to_row: false
     aggregate_data: false
